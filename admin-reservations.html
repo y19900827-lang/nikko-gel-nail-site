@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理者予約帳 | ダンスファッションニッコウ</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="header-footer.js"></script>
+  </head>
+  <body>
+    <main class="page">
+      <section id="loginBox" class="card form">
+        <p class="kicker">Admin</p>
+        <h1>管理者予約帳</h1>
+        <p class="body-copy">管理者パスワードを入力してください。</p>
+        <label>パスワード<input id="adminPassword" type="password"></label>
+        <button id="loginButton" class="gel-button" type="button">ログイン</button>
+        <p id="loginMessage" class="message danger"></p>
+      </section>
+
+      <section id="adminApp" style="display:none">
+        <div class="grid-2">
+          <form class="card form">
+            <p class="kicker">Add</p>
+            <h2 class="section-title">電話予約・受付停止を追加</h2>
+            <label>日付<input id="adminDate" type="date"></label>
+            <label>時間<select id="adminStartTime"></select></label>
+            <label>種別<select id="adminStatus"><option value="reserved">予約済み</option><option value="blocked">受付停止</option></select></label>
+            <label>メニュー<select id="adminMenu"><option value="trial">体験ジェルネイル</option><option value="repeat">2回目以降のお客様</option></select></label>
+            <label>名前<input id="adminName" placeholder="電話予約の場合のみ"></label>
+            <label>電話番号<input id="adminPhone" placeholder="電話予約の場合のみ"></label>
+            <label>備考<textarea id="adminNote" rows="3"></textarea></label>
+            <label>管理者メモ<textarea id="adminMemo" rows="3"></textarea></label>
+            <button id="addAdminReservation" class="gel-button" type="button">追加する</button>
+            <p id="adminMessage" class="message"></p>
+          </form>
+          <div class="card">
+            <p class="kicker">Rule</p>
+            <h2 class="section-title">予約ルール</h2>
+            <p class="body-copy">管理者は当日、60日より先、土日祝の電話予約も手入力できます。</p>
+            <p class="body-copy">ただし、同じ日時の二重予約と受付停止枠への追加はできません。</p>
+          </div>
+        </div>
+        <section class="card" style="margin-top:28px">
+          <p class="kicker">List</p>
+          <h2 class="section-title">予約一覧</h2>
+          <div class="table-wrap"><table><thead><tr><th>日付</th><th>時間</th><th>名前</th><th>電話</th><th>メニュー</th><th>備考</th><th>管理メモ</th><th>状態</th><th>操作</th></tr></thead><tbody id="reservationRows"></tbody></table></div>
+        </section>
+      </section>
+    </main>
+    <script src="admin-reservations.js"></script>
+  </body>
+</html>

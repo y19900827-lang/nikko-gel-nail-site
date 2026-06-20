@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>予約 | ダンスファッションニッコウ</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="header-footer.js"></script>
+  </head>
+  <body>
+    <main class="page grid-2">
+      <section class="card form">
+        <p class="kicker">Reserve</p>
+        <h1>予約ページ</h1>
+        <p class="body-copy">空き状況を見ながら、1時間枠で予約できます。</p>
+        <p class="body-copy">当日のご予約はWebでは受け付けておりません。お急ぎの場合はお電話にてお問い合わせください。</p>
+
+        <label>メニュー
+          <select id="menuType">
+            <option value="trial">体験ジェルネイル</option>
+            <option value="repeat">2回目以降のお客様</option>
+          </select>
+        </label>
+        <label>日付
+          <select id="dateSelect"></select>
+        </label>
+        <div>
+          <p class="kicker">Time</p>
+          <div id="slots" class="slot-grid"></div>
+        </div>
+      </section>
+
+      <section class="card form">
+        <p class="kicker">Form</p>
+        <h2 class="section-title">お客様情報</h2>
+        <label>名前<input id="customerName" autocomplete="name" placeholder="例：山田 花子"></label>
+        <label>電話番号<input id="phone" autocomplete="tel" placeholder="例：090-0000-0000"></label>
+        <label>備考<textarea id="note" rows="5" placeholder="気になることがあれば入力してください"></textarea></label>
+        <button id="submitReservation" class="gel-button" type="button">予約する</button>
+        <p id="message" class="message"></p>
+      </section>
+
+      <section class="card" style="grid-column: 1 / -1">
+        <div class="calendar-toolbar">
+          <button id="prevMonth" type="button">前の月</button>
+          <h2 id="calendarTitle" class="section-title" style="margin:0;font-size:36px"></h2>
+          <button id="nextMonth" type="button">次の月</button>
+        </div>
+        <p class="body-copy" style="margin-bottom:18px">1か月分の空き状況です。空きのある日を押すと、上の日付選択に反映されます。</p>
+        <div id="monthCalendar" class="month-calendar"></div>
+      </section>
+    </main>
+
+    <script src="reserve.js"></script>
+  </body>
+</html>

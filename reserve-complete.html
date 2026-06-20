@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>予約完了 | ダンスファッションニッコウ</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="header-footer.js"></script>
+  </head>
+  <body>
+    <main class="page">
+      <section class="card">
+        <p class="kicker">Complete</p>
+        <h1>ご予約ありがとうございます。</h1>
+        <p class="lead">予約を受け付けました。</p>
+        <div id="completeDetails" class="body-copy" style="margin-top:28px"></div>
+        <p class="body-copy" style="margin-top:28px">当日は予約時間に合わせてご来店ください。</p>
+        <p class="body-copy">予約内容の変更・キャンセルをご希望の場合は、お電話にてお問い合わせください。</p>
+        <p style="margin-top:32px"><a class="gel-button" href="index.html">トップへ戻る</a></p>
+      </section>
+    </main>
+    <script>
+      const data = JSON.parse(sessionStorage.getItem("lastReservation") || "{}");
+      const labels = { trial: "体験ジェルネイル", repeat: "2回目以降のお客様" };
+      document.getElementById("completeDetails").innerHTML = data.date
+        ? `<p>予約日時：${data.date} ${data.startTime}〜${data.endTime}</p><p>メニュー：${labels[data.menuType] || data.menuType}</p><p>お名前：${data.customerName}</p>`
+        : "<p>予約内容を表示できませんでした。</p>";
+    </script>
+  </body>
+</html>
