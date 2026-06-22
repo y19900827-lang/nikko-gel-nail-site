@@ -13,10 +13,11 @@ function menuLabel(value) {
 async function loadAvailability() {
   const res = await fetch("/api/public/availability?days=61");
   const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "空き状況を取得できませんでした");
   availability = data.days.filter((day) => !day.restriction);
   dateSelect.innerHTML = availability.map((day) => `<option value="${day.date}">${day.date}</option>`).join("");
   renderSlots();
-  renderCalendar();
+  renderCalendar(data.days);
 }
 
 function renderSlots() {
@@ -42,14 +43,6 @@ function renderSlots() {
   });
 }
 
-function findDay(dateKey) {
-  return availability.find((day) => day.date === dateKey);
-}
-
-function countAvailable(day) {
-  return day ? day.slots.filter((slot) => slot.state === "空きあり").length : 0;
-}
-
 function pad(value) {
   return String(value).padStart(2, "0");
 }
@@ -58,10 +51,11 @@ function dateKey(date) {
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 }
 
-function renderCalendar() {
+function renderCalendar(allDays = null) {
   const calendar = document.getElementById("monthCalendar");
   const title = document.getElementById("calendarTitle");
   if (!calendar || !title) return;
+  const source = allDays || availability;
 
   const year = calendarMonth.getFullYear();
   const month = calendarMonth.getMonth();
@@ -86,20 +80,20 @@ function renderCalendar() {
   for (let dayNumber = 1; dayNumber <= lastDay.getDate(); dayNumber += 1) {
     const current = new Date(year, month, dayNumber);
     const key = dateKey(current);
-    const day = findDay(key);
-    const availableCount = countAvailable(day);
+    const day = source.find((item) => item.date === key);
+    const availableCount = day ? day.slots.filter((slot) => slot.state === "空きあり").length : 0;
     const cell = document.createElement("div");
     let label = "受付終了";
     let stateClass = "ended";
-    if (day && availableCount > 0) {
+    if (day && day.restriction === "定休日") {
+      label = "定休日";
+      stateClass = "closed";
+    } else if (day && availableCount > 0) {
       label = `空き ${availableCount}枠`;
       stateClass = "available";
     } else if (day) {
       label = "満席";
       stateClass = "full";
-    } else {
-      label = "定休日 / 対象外";
-      stateClass = "closed";
     }
     cell.className = `calendar-day ${stateClass}`;
     const content = `<strong>${dayNumber}</strong><span>${label}</span>`;
@@ -122,6 +116,7 @@ function renderCalendar() {
 
 async function submitReservation() {
   messageEl.textContent = "";
+  messageEl.classList.remove("danger");
   if (!selectedSlot) {
     messageEl.textContent = "空いている時間枠を選んでください。";
     return;
@@ -160,7 +155,7 @@ document.getElementById("nextMonth").addEventListener("click", () => {
   calendarMonth.setMonth(calendarMonth.getMonth() + 1);
   renderCalendar();
 });
-loadAvailability().catch(() => {
-  messageEl.textContent = "予約情報を読み込めませんでした。サーバーを起動してください。";
+loadAvailability().catch((error) => {
+  messageEl.textContent = error.message || "予約情報を読み込めませんでした。";
   messageEl.classList.add("danger");
 });
