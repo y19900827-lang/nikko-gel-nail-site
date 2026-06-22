@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin-reservations.html
+Disallow: /reserve-complete.html
+
+Sitemap: https://nikko-gel-nail-site.vercel.app/sitemap.xml
